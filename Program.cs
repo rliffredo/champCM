@@ -17,7 +17,7 @@ namespace champ
       var exitCode = 0;
       if (!Parser.Default.ParseArguments(args, options))
       {
-        Console.WriteLine("Couldn\'t understand that command. For help please try champ.exe --help");
+        Console.WriteLine("Couldn\'t understand that command. For help please try champCM.exe --help");
         return 1;
       }
 
@@ -27,7 +27,7 @@ namespace champ
         return 0;
       }
       Log.Threshold = options.EnableVerboseLogging ? LogLevel.Debug : LogLevel.Error;
-      Log.Debug("[Champ] Champ is starting.");
+      Log.Debug("[ChampCM] ChampCM is starting.");
       if (!options.Bootstrap && String.IsNullOrEmpty(options.Source) && String.IsNullOrEmpty(options.Destination))
       {
         Console.WriteLine("Nothing to do.");
@@ -43,7 +43,7 @@ namespace champ
 
       if (options.Bootstrap)
       {
-        Log.Debug("[Champ] Downloading champ bootstrap file.");
+        Log.Debug("[ChampCM] Downloading champ bootstrap file.");
         var source = String.IsNullOrEmpty(options.Source) ? "." : options.Source;
         new Bootstrap(source, options.BootstrapSource).Run();
         return 0;
@@ -52,13 +52,13 @@ namespace champ
       // Last but not least, just run the tool
       if (options.Watch)
       {
-        Log.Debug("[Champ] Starting Watcher.");
+        Log.Debug("[ChampCM] Starting Watcher.");
         var watcher = new Watcher(options.Source, options.Destination, options.DefaultTemplate);
         watcher.Watch();
       }
       else
       {
-        Log.Debug("[Champ] Starting Site Builder.");
+        Log.Debug("[ChampCM] Starting Site Builder.");
         int numBrokenPages = new SiteBuilder(options.Source, options.Destination, options.DefaultTemplate).Run();
         if (numBrokenPages > 0)
         {
@@ -66,7 +66,7 @@ namespace champ
           exitCode = 1;
         }
       }
-      Log.Debug("[Champ] Done, exiting.");
+      Log.Debug("[ChampCM] Done, exiting.");
       return exitCode;
     }
   }
