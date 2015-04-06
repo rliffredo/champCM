@@ -38,6 +38,10 @@
     <Reference Include="CommandLine">
       <HintPath>packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
     </Reference>
+    <Reference Include="CommonMark, Version=0.1.0.0, Culture=neutral, PublicKeyToken=001ef8810438905d, processorArchitecture=MSIL">
+      <HintPath>packages\CommonMark.NET.0.8.5\lib\net45\CommonMark.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="dotless.ClientOnly">
       <HintPath>packages\DotlessClientOnly.1.4.4\lib\dotless.ClientOnly.dll</HintPath>
     </Reference>
@@ -98,7 +102,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>$(SolutionDir)packages\ilmerge.2.14.1208\tools\ILMerge.exe /target:exe /out:$(ProjectDir)build\champCM.exe /v4 $(TargetDir)champ-app.exe $(TargetDir)CommandLine.dll $(TargetDir)MarkdownSharp.dll $(TargetDir)Xipton.Razor.dll $(TargetDir)\Ionic.Zip.dll $(TargetDir)\dotless.ClientOnly.dll</PostBuildEvent>
+    <PostBuildEvent>$(SolutionDir)packages\ilmerge.2.14.1208\tools\ILMerge.exe /target:exe /out:$(ProjectDir)build\champCM.exe /v4 $(TargetDir)champ-app.exe $(TargetDir)CommandLine.dll $(TargetDir)CommonMark.dll $(TargetDir)Xipton.Razor.dll $(TargetDir)\Ionic.Zip.dll $(TargetDir)\dotless.ClientOnly.dll</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>

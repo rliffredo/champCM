@@ -1,6 +1,7 @@
 ﻿using champ.DebugHelper;
 using champ.Map;
-using MarkdownSharp;
+//using MarkdownSharp;
+using CommonMark;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,7 +23,7 @@ namespace champ
         public static RazorMachine Razor { get { return _razor.Value; } }
         private DirectoryInfo _sourcePath;
         private DirectoryInfo _outputPath;
-        private Markdown _markdown;
+        //private Markdown _markdown;
         private string _defaultTemplate;
         private int _brokenPageCount;
         private dynamic _globalSettings;
@@ -34,7 +35,7 @@ namespace champ
             _defaultTemplate = defaultTemplate;
             Log.Debug("[SiteBuilder] SourcePath: " + _sourcePath.FullName);
             Log.Debug("[SiteBuilder] OutputPath: " + _outputPath.FullName);
-            _markdown = new Markdown(new MarkdownOptions() { AutoHyperlink = true });
+            //_markdown = new Markdown(new MarkdownOptions() { AutoHyperlink = true });
 
             // Load templates
             LoadTemplates();
@@ -47,7 +48,7 @@ namespace champ
         {
             _sourcePath = new DirectoryInfo(sourcePath);
             Log.Debug("[SiteBuilder] SourcePath: " + _sourcePath.FullName);
-            _markdown = new Markdown(new MarkdownOptions() { AutoHyperlink = true });
+            //_markdown = new Markdown(new MarkdownOptions() { AutoHyperlink = true });
             // Load templates
             LoadTemplates();
             // Load global settings
@@ -75,7 +76,7 @@ namespace champ
 
         public string ProcessPageNode(PageNode page)
         {
-            var rawContent = _markdown.Transform(page.GetRawContent());
+            var rawContent = CommonMark.CommonMarkConverter.Convert(page.GetRawContent());
             var templateFile = "~/" + page.Template + ".cshtml";
             var template = Razor.GetTemplate(templateFile);
             var pageModel = new PageModel(page, rawContent, page.PageLists);
