@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("champ")]
-[assembly: AssemblyDescription("A static site generator for Windows. More info at https://github.com/lukevenediger/champ")]
+[assembly: AssemblyTitle("champCM")]
+[assembly: AssemblyDescription("A static site generator for Windows. More info at https://github.com/Nitemice/champCM")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("champ")]
-[assembly: AssemblyCopyright("Copyright © Luke Venediger 2013")]
+[assembly: AssemblyProduct("champCM")]
+[assembly: AssemblyCopyright("Copyright © Luke Venediger 2013, Nitemice 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

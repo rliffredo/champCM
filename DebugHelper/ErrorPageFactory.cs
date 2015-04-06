@@ -30,11 +30,12 @@ namespace champ.DebugHelper
       <span class='icon-bar'></span>
       </button>
       <a class='navbar-brand' href='https://github.com/lukevenediger/champ/'>champ</a>
+      <a class='navbar-brand' href='https://github.com/Nitemice/champCM/'>champCM</a>
     </div>
     <div class='collapse navbar-collapse'>
       <ul class='nav navbar-nav'>
-      <li class='active'><a href='https://github.com/lukevenediger/champ/'>Project Home</a></li>
-      <li><a href='https://github.com/lukevenediger/champ/issues'>Report a Bug</a></li>
+      <li class='active'><a href='https://github.com/Nitemice/champCM/'>Project Home</a></li>
+      <li><a href='https://github.com/Nitemice/champCM/issues/'>Report a Bug</a></li>
       </ul>
     </div>
     </div>

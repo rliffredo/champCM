@@ -16,7 +16,7 @@ namespace champ
 
     [Option('t', "template", HelpText = "Specifies the default template.", Required = false)]
     public string DefaultTemplate { get; set; }
-    [Option('b', "bootstrap", HelpText = "Download a bootstrapped site to use with champ.", Required = false, DefaultValue = false)]
+    [Option('b', "bootstrap", HelpText = "Download a bootstrapped site to use with champ/champCM.", Required = false, DefaultValue = false)]
     public bool Bootstrap { get; set; }
     [Option('s', "bootstrap-source", HelpText = "Full path to the champ bootstrap zip file on a share or filesystem.", Required = false)]
     public string BootstrapSource { get; set; }
@@ -35,9 +35,9 @@ namespace champ
         return String.Join("\n",
           help,
           "Examples:",
-          @"  champ.exe c:\mysite                    Rebuild and save in c:\mysite\output",
-          @"  champ.exe c:\mysite c:\output",
-          @"  champ.exe c:\mysite c:\output --watch  Watch c:\mysite for file changes"
+          @"  champCM.exe c:\mysite                    Rebuild and save in c:\mysite\output",
+          @"  champCM.exe c:\mysite c:\output",
+          @"  champCM.exe c:\mysite c:\output --watch  Watch c:\mysite for file changes"
           );
       }
     }
