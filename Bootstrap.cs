@@ -27,8 +27,17 @@ namespace champ
       if (String.IsNullOrEmpty(_uncLocation))
       {
         var client = new WebClient();
+          const string downloadUrl = "https://github.com/lukevenediger/champ-bootstrap/releases/download/v1.0/champ-bootstrap.zip";
         Console.WriteLine("Downloading champ-bootstrap.zip (github.com)");
-        client.DownloadFile("https://github.com/lukevenediger/champ-bootstrap/releases/download/v1.0/champ-bootstrap.zip", targetFile);
+        try
+        {
+          client.DownloadFile(downloadUrl, targetFile);
+        }
+        catch (System.Net.WebException e)
+        {
+          Console.WriteLine("Cannot download bootstrap. Reason: {0}.\nYou might want to manually download it from ({1}) and then use -s option", e.Message, downloadUrl);
+          return;
+        }
       }
       else
       {
