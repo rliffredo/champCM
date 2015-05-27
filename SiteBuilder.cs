@@ -73,13 +73,20 @@ namespace champ
         public string ProcessPageNode(PageNode page)
         {
             var rawContent = CommonMark.CommonMarkConverter.Convert(page.GetRawContent());
-            var templateFile = "~/" + page.Template + ".cshtml";
-            var template = Razor.GetTemplate(templateFile);
+            var template = GetRazorTemplate(page);
             var pageModel = new PageModel(page, rawContent, page.PageLists);
-            return Razor.ExecuteContent(template,
+            var executedTemplate = Razor.ExecuteContent(template,
                   model: pageModel,
                   viewbag: page.Properties
-            ).Result;
+            );
+            return executedTemplate.Result;
+        }
+
+        private static string GetRazorTemplate(PageNode page)
+        {
+            var templateFile = "~/" + page.Template + ".cshtml";
+            var template = Razor.GetTemplate(templateFile);
+            return template;
         }
 
         private void PrepareOutputPath()
@@ -195,13 +202,22 @@ namespace champ
             }
             catch (TemplateCompileException e)
             {
-                Log.Error("[SiteBuilder] Error while generating {0}: {1}", page.ToString(), e.Message);
-                Log.Error(e.ToString());
-                var templateFile = "~/" + page.Template + ".cshtml";
-                var template = Razor.GetTemplate(templateFile);
-                renderedContent = ErrorPageFactory.BuildCompilationError(template, templateFile, page, e);
+                LogError(page, e);
+                renderedContent = ErrorPageFactory.BuildCompilationError(GetRazorTemplate(page), page, e);
                 return false;
             }
+            catch (TemplateBindingException e)
+            {
+                LogError(page, e);
+                renderedContent = ErrorPageFactory.BuildBindingError(GetRazorTemplate(page), page, e);
+                return false;
+            }
+        }
+
+        private static void LogError(PageNode page, TemplateException e)
+        {
+            Log.Error("[SiteBuilder] Error while generating {0}: {1}", page.ToString(), e.Message);
+            Log.Error(e.ToString());
         }
     }
 }

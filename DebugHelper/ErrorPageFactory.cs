@@ -9,10 +9,10 @@ using Xipton.Razor.Core;
 
 namespace champ.DebugHelper
 {
-  public static class ErrorPageFactory
-  {
-    private static string ERROR_PAGE_TEMPLATE =
-      @"
+    public static class ErrorPageFactory
+    {
+        private static string ERROR_PAGE_TEMPLATE =
+            @"
 <html>
 <head>
   <title>{PageName} - Champ Error Report</title>
@@ -61,46 +61,57 @@ namespace champ.DebugHelper
 </body>
 </html>
 ";
-    public static string BuildCompilationError(string template, 
-      string templateFile,
-      PageNode page,
-      TemplateCompileException e)
-    {
-      var lines = e.Message.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-      var title = lines[0];
-      var errorMessage = lines[2];
-      if (title.Contains("~/_MemoryContent/"))
-      {
-        title = title.Split(':')[0];
-      }
-      int lineNumber = Int32.Parse(lines[1].Split(':')[0].Replace("line", ""));
-      string snippet = GetSnippet(template, lineNumber);
 
-      return ERROR_PAGE_TEMPLATE
-        .Replace("{PageName}", page.PageName)
-        .Replace("{Title}", title)
-        .Replace("{ErrorMessage}", errorMessage)
-        .Replace("{LineNumber}", lineNumber.ToString())
-        .Replace("{ContentFile}", page.PageFile.FullName)
-        .Replace("{TemplateFile}", templateFile)
-        .Replace("{Snippet}", snippet);
+        public static string BuildCompilationError(string template,
+            PageNode page,
+            TemplateCompileException e)
+        {
+            var lines = e.Message.Split(new string[] {"\r\n"}, StringSplitOptions.RemoveEmptyEntries);
+            var title = lines[0];
+            var errorMessage = lines[2];
+            if (title.Contains("~/_MemoryContent/"))
+            {
+                title = title.Split(':')[0];
+            }
+            var lineNumber = Int32.Parse(lines[1].Split(':')[0].Replace("line", ""));
+
+            return CreateErrorOutput(template, page, title, lineNumber, errorMessage);
+        }
+
+        public static string BuildBindingError(string template, PageNode page, TemplateBindingException e)
+        {
+            return CreateErrorOutput(template, page, "Runtime binding error", 0, e.Message);
+        }
+
+        private static string CreateErrorOutput(string template, PageNode page, string title, int lineNumber, string errorMessage)
+        {
+            string snippet = GetSnippet(template, lineNumber);
+            return ERROR_PAGE_TEMPLATE
+                .Replace("{PageName}", page.PageName)
+                .Replace("{Title}", title)
+                .Replace("{ErrorMessage}", errorMessage)
+                .Replace("{LineNumber}", lineNumber.ToString())
+                .Replace("{ContentFile}", page.PageFile.FullName)
+                .Replace("{TemplateFile}", page.Template + ".cshtml")
+                .Replace("{Snippet}", snippet);
+        }
+
+        private static string GetSnippet(string template, int lineNumber)
+        {
+            var lines = template.Replace("\r", "").Split('\n');
+            int startIndex = Math.Max(lineNumber - 4, 0);
+            int endIndex = Math.Min(lineNumber + 4, lines.Length);
+            ;
+            List<string> outputLines = new List<string>();
+
+            for (var index = startIndex; index < endIndex; index++)
+            {
+                outputLines.Add("<li " + (index == (lineNumber - 1) ? "style='background: #f2dede;'" : "") + ">" +
+                                "<strong>" + (index + 1) + ":</strong><code>" +
+                                HttpUtility.HtmlEncode(lines[index]) + "</code></li>");
+            }
+
+            return String.Join(Environment.NewLine, outputLines.ToArray());
+        }
     }
-
-    private static string GetSnippet(string template, int lineNumber)
-    {
-      var lines = template.Replace("\r", "").Split('\n');
-      int startIndex = Math.Max(lineNumber - 4, 0);
-      int endIndex = Math.Min(lineNumber + 4, lines.Length);;
-      List<string> outputLines = new List<string>();
-
-      for (var index = startIndex; index < endIndex; index++)
-      {
-        outputLines.Add("<li " + (index == (lineNumber - 1) ? "style='background: #f2dede;'" : "") + ">" +
-                          "<strong>" + (index + 1) + ":</strong><code>" +
-                          HttpUtility.HtmlEncode(lines[index]) + "</code></li>");
-      }
-
-      return String.Join(Environment.NewLine, outputLines.ToArray());
-    }
-  }
 }
