@@ -24,7 +24,7 @@ namespace champ
             {
                 var client = new WebClient();
                 const string downloadUrl =
-                    "https://github.com/lukevenediger/champ-bootstrap/releases/download/v1.0/champ-bootstrap.zip";
+                    "https://github.com/lukevenediger/champ-bootstrap/archive/master.zip";
                 Console.WriteLine("Downloading champ-bootstrap.zip (github.com)");
                 try
                 {
